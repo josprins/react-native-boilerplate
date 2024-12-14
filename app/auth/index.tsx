@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, Button, StyleSheet } from "react-native";
-import { signIn, signUp } from "../../firebase/authFunctions"; // Adjust path based on your folder structure
+import { signIn, signUp, googleSignIn } from "../../firebase/authFunctions"; // Adjust path based on your folder structure
 import { useRouter } from "expo-router";
 
 const AuthScreen = () => {
@@ -28,6 +28,15 @@ const AuthScreen = () => {
     }
   };
 
+  const handleGoogleLogin = async () => {
+    try {
+      await googleSignIn();
+      console.log("Google login successful");
+    } catch (error: any) {
+      alert(`Error during Google sign-in: ${error.message}`);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{isSignUp ? "Sign Up" : "Sign In"}</Text>
@@ -51,6 +60,8 @@ const AuthScreen = () => {
         onPress={handleAuth}
         disabled={loading}
       />
+      <Button title="Sign in with Google" onPress={handleGoogleLogin} />
+
       <Text
         style={styles.toggleText}
         onPress={() => setIsSignUp((prev) => !prev)}
